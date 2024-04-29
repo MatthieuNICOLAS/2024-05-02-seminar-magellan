@@ -1,0 +1,82 @@
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{naturalnames}{hyperref}
+
+\documentclass[10pt]{beamer}
+
+\usetheme[sectionpage=none,block=fill]{metropolis}
+
+\usepackage{acronym} % \ac[p], \acl[ptl], \acs[p], \acf[p]
+\usepackage{algorithm, algpseudocode}
+\usepackage{appendixnumberbeamer}
+\usepackage[backend=biber,style=alphabetic,sorting=none,maxbibnames=1]{biblatex}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{bookmark}
+\usepackage{booktabs} % \toprule, \midrule, \cmidrule, \bottomrule
+\usepackage{cancel} % \cancel
+\usepackage{caption}
+\usepackage[scale=2]{ccicons}
+\usepackage{csquotes} % Dépendance de babel
+\usepackage{graphicx}
+\hypersetup{hidelinks}
+% \usepackage[inline]{enumitem}
+% \setlist[enumerate]{label=(\roman*)} %% <- set the base level label separately
+\usepackage{marvosym} % \Flatsteel
+\usepackage{MnSymbol} % \dashrightarrow
+\usepackage{pifont} % \ding
+\usepackage{silence} % \WarningFilter
+\WarningFilter{biblatex}{Patching footnotes failed}
+\usepackage{subcaption} % subfigure
+\usepackage{tikz} % \begin{tikzpicture} \end{tikzpicture}
+\usetikzlibrary{calc}
+\usetikzlibrary{graphs}
+\usetikzlibrary{positioning}
+\usetikzlibrary{quotes}
+\usetikzlibrary{shapes.misc}
+\usetikzlibrary{tikzmark}
+\usepackage{wasysym} % \checked
+\usepackage{xcolor}
+\usepackage{xspace} % \xspace
+
+%-------------------------------------------------------------------
+%                           Assets
+%-------------------------------------------------------------------
+\input{assets/acronyms}
+\input{assets/algorithms}
+\input{assets/autorefs}
+\input{assets/biblio}
+\input{assets/colors}
+\input{assets/figs}
+\input{assets/ids}
+\input{assets/maths}
+\input{assets/misc}
+\input{assets/tikz}
+
+\author{
+  \textbf{Matthieu Nicolas} (\texttt{matthieu.nicolas@inria.fr})
+}
+\date{02/05/2024}
+\title{Conflict-free Replicated Data Types (CRDTs)}
+\subtitle{An Overview}
+%\institute{}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+  \maketitle
+\end{frame}
+
+\input{content/data-replication-in-p2p-systems}
+\input{content/overview-crdts}
+\input{content/conflict-resolution-semantics}
+\input{content/synchronisation-models}
+\input{content/state-of-art}
+
+\input{content/references}
+
+\begin{frame}[standout]
+    \alert{Back-up slides}
+\end{frame}
+
+\input{appendixes/mute}
+
+\end{document}
