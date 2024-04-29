@@ -1,0 +1,205 @@
+\section{Synchronisation Models}
+
+\begin{frame}{Synchronisation Models}
+    \metroset{block=transparent}
+    \begin{block}{To converge}
+        \begin{itemize}
+            \item Nodes have to propagate changes \dots
+            \item \dots And integrate those of others
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Several approaches proposed}
+        \begin{itemize}
+            \item State-based synchronisation
+            \item Operation-based synchronisation
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
+\begin{frame}{An aparté about lattice theory}
+    \metroset{block=transparent}
+
+    \begin{block}{Properties of join-semilattices}
+        \begin{itemize}
+            \item States of the join-semilattices are ordered according to relation $\leq$
+            \item Updates produce new states by inflation, i.e. greater to previous ones according to $\leq$
+            \item Exists a function $\trm{join}$ that, given any pair of states, generates the minimal state greater or equal to both given states according to $\leq$
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\subsection{State-based CRDTs}
+
+\begin{frame}{State-based synchronisation}
+    \metroset{block=transparent}
+
+    \begin{itemize}
+        \item \alert{Send periodically current state} to other nodes
+    \end{itemize}
+
+    \begin{figure}[!ht]
+
+        \centering
+        \resizebox{\columnwidth}{!}{
+          \begin{tikzpicture}
+            \path
+                node {\textbf{A}}
+                ++(0:0.5) node (a) {}
+                +(0:13) node (a-end) {}
+                +(0:1) node[point, label=above right:{$\set{a,e}$}] (a-initial) {}
+                +(0:3.5) node[point, label=above right:{$\set{a,b,e}$}, label=-170:{$\trm{add}(b)$}] (a-add-b) {}
+                +(0:6) node[point, label=above right:{$\set{a,b,c,e}$}, label=-170:{$\trm{add}(c)$}] (a-add-c) {}
+                +(0:8.5) node[point, label=below left:{$\trm{sync}$}, label={[xshift=10pt]-10:{$\set{a,b,c,e}$}}] (a-sends-state) {}
+                +(0:11.5) node[point, label=above right:{$\set{a,b,c,d,e}$}] (a-final) {};
+
+            \draw[dotted] (a) -- (a-initial) (a-final) -- (a-end);
+            \draw[->, thick] (a-initial) --  (a-add-b) -- (a-add-c) -- (a-sends-state) -- (a-final);
+
+            \path
+                ++(270:2) node {\textbf{B}}
+                ++(0:0.5) node (b) {}
+                +(0:13) node (b-end) {}
+                +(0:1) node[point, label=below right:{$\set{a,e}$}] (b-initial) {}
+                +(0:3.5) node[point, label=below right:{$\set{a,d,e}$}, label=170:{$\trm{add}(d)$}] (b-add-d) {}
+                +(0:8.5) node[point, label=170:{$\trm{sync}$}, label={[xshift=15pt]10:{$\set{a,d,e}$}}] (b-sends-state) {}
+                +(0:11.5) node[point, label=below right:{$\set{a,b,c,d,e}$}] (b-final) {};
+
+            \draw[dotted] (b) -- (b-initial) (b-final) -- (b-end);
+            \draw[->, thick] (b-initial) --  (b-add-d) -- (b-sends-state) -- (b-final);
+
+            \draw[->, dashed, shorten >= 1] (a-sends-state) -- (b-final);
+            \draw[->, dashed, shorten >= 1] (b-sends-state) -- (a-final);
+          \end{tikzpicture}
+        }
+    \end{figure}
+
+    \begin{itemize}
+        \item Upon reception, \alert{computes new state by merging received state with current one} using \texttt{merge} function
+        \item With \texttt{merge}, a \alert{commutative, associative and idempotent function}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{State-based synchronisation - ???}
+    \metroset{block=transparent}
+
+    \begin{block}{Strengths}
+        \begin{itemize}
+            \item No assumptions on the network reliability
+            \item i.e. messages may be lost, re-ordered or duplicated w/o impact
+        \end{itemize}
+    \end{block}
+    \begin{block}{Limits}
+        \begin{itemize}
+            \item Sending states may be expensive
+            \item \texttt{merge} may be expensive and difficult to design
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\subsection{Operation-based CRDTs}
+
+\begin{frame}{Operation-based synchronisation}
+    \begin{itemize}
+        \item \alert{Encode updates as arbitrary messages}, called \emph{operations}
+    \end{itemize}
+
+    \begin{figure}[!ht]
+
+        \centering
+        \resizebox{\columnwidth}{!}{
+          \begin{tikzpicture}
+            \path
+                node {\textbf{A}}
+                ++(0:0.5) node (a) {}
+                +(0:17) node (a-end) {}
+                +(0:1) node[point, label=above right:{$\set{a,e}$}] (a-initial) {}
+                +(0:3.5) node[point, label=above right:{$\set{a,b,e}$}, label=-170:{$\trm{add}(b)$}] (a-add-b) {}
+                +(0:6) node[point, label=above right:{$\set{a,b,c,e}$}, label=-170:{$\trm{add}(c)$}] (a-add-c) {}
+                +(0:8.5) node[point, label=above right:{$\set{a,b,c,d,e}$}] (a-receives-add-d) {}
+                +(0:13.5) node[point, label={[xshift=8pt]-10:{$\trm{add(b)}$}}] (a-receives-query-sync) {}
+                +(0:16) node (a-final) {};
+
+            \draw[dotted] (a) -- (a-initial) (a-final) -- (a-end);
+            \draw[->, thick] (a-initial) --  (a-add-b) -- (a-add-c) -- (a-receives-add-d) -- (a-receives-query-sync) -- (a-final);
+
+            \path
+                ++(270:3) node {\textbf{B}}
+                ++(0:0.5) node (b) {}
+                +(0:17) node (b-end) {}
+                +(0:1) node[point, label=below right:{$\set{a,e}$}] (b-initial) {}
+                +(0:6) node[point, label=below right:{$\set{a,d,e}$}, label=170:{$\trm{add}(d)$}] (b-add-d) {}
+                +(0:8.5) node[point, label=below right:{$\set{a,c,d,e}$}] (b-receives-add-c) {}
+                +(0:11) node[point, label=170:{$\trm{query\ sync}$}] (b-sends-query-sync) {}
+                +(0:16) node[point, label=below right:{$\set{a,b,c,d,e}$}] (b-final) {};
+
+            \draw[dotted] (b) -- (b-initial) (b-final) -- (b-end);
+            \draw[->, thick] (b-initial) --  (b-add-d) -- (b-receives-add-c) -- (b-sends-query-sync) -- (b-final);
+
+            \draw[->, dashed, shorten >= 1] (a-add-c) -- (b-receives-add-c);
+            \draw[->, dashed, shorten >= 1] (b-add-d) -- (a-receives-add-d);
+            \draw[->, dashed, shorten >= 1] (b-sends-query-sync) -- (a-receives-query-sync);
+            \draw[->, dashed, shorten >= 1] (a-receives-query-sync) -- (b-final);
+
+            \path
+              ++(270:1.5)
+              ++(0:0.5)
+              +(0:4.75) node[cross] (network-error) {};
+
+            \draw[->, dashed, shorten >= 1] (a-add-b) -- (network-error);
+          \end{tikzpicture}
+        }
+      \end{figure}
+
+    \begin{itemize}
+        \item Upon reception, apply operations on current state
+        \item \alert{Concurrent operations} must be \alert{commutative}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Operation-based synchronisation - ???}
+    \metroset{block=transparent}
+
+    \begin{block}{Strengths}
+        \begin{itemize}
+            \item Operations usually cheap to broadcast and apply
+        \end{itemize}
+    \end{block}
+    \begin{block}{Limits}
+        \begin{itemize}
+            \item Hide/delegate complexity to delivery order of operations
+            \begin{itemize}
+                \item i.e. require specific delivery order of operations
+                \item e.g. insertion of an element before its deletion
+            \end{itemize}
+            \item Have to pair Op-based CRDTs with a delivery service to handle network failures
+            \begin{itemize}
+                \item To re-order and/or de-duplicate operations
+                \item To retrieve lost operations using anti-entropy mechanisms
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\subsection{Delta-based synchronisation}
+
+\subsection{Recap}
+
+\begin{frame}{Synchronisation Models - Recap}
+    \begin{table}[!ht]
+        \centering
+        \resizebox{\columnwidth}{!}{
+          \begin{tabular}{lccc}
+            \toprule
+                                                      & State-based & Op-based    & Delta-based \\
+            \midrule
+            Integrate updates by merging states         & \checkmark  & \ballotx    & \checkmark  \\
+            Integrate updates by single element       & \ballotx    & \checkmark  & \checkmark  \\
+            Handle natively network failures          & \checkmark  & \ballotx    & \checkmark  \\
+            Suited for real-time systems              & \ballotx    & \checkmark  & \checkmark  \\
+            \bottomrule
+          \end{tabular}
+        }
+    \end{table}
+\end{frame}

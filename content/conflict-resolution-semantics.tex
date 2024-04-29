@@ -12,7 +12,7 @@
                 \path
                     node {\textbf{A}}
                     ++(0:0.5) node (a) {}
-                    +(0:13.5) node (a-end) {}
+                    +(0:13) node (a-end) {}
                     +(0:1) node[point, label=above right:{$\{a\}$}] (a-initial) {}
                     +(0:3.5) node[point, label=above right:{$\{\}$}, label=below left:{$\trm{rmv}(a)$}] (a-removes) {}
                     +(0:6) node[point, label=above right:{$\{a\}$}, label=below left:{$\trm{add}(a)$}] (a-add) {}
@@ -25,7 +25,7 @@
                 \path
                     ++(270:2.5) node {\textbf{B}}
                     ++(0:0.5) node (b) {}
-                    +(0:13.5) node (b-end) {}
+                    +(0:13) node (b-end) {}
                     +(0:1) node[point, label=below right:{$\{a\}$}] (b-initial) {}
                     +(0:3.5) node[point, label=below right:{$\{\}$}, label=above left:{$\trm{rmv}(a)$}] (b-removes) {}
                     +(0:8.5) node[point, label=above left:{$\trm{sync}$}] (b-start-sync) {}
@@ -55,7 +55,7 @@
                 \path
                     node {\textbf{A}}
                     ++(0:0.5) node (a) {}
-                    +(0:13.5) node (a-end) {}
+                    +(0:13) node (a-end) {}
                     +(0:1) node[point, label=above right:{$\{a\}$}] (a-initial) {}
                     +(0:3.5) node[point, label=above right:{$\{\}$}, label=below left:{$\trm{rmv}(a)$}] (a-removes) {}
                     +(0:6) node[point, label=above right:{$\{a\}$}, label=below left:{$\trm{add}(a)$}] (a-add) {}
@@ -68,7 +68,7 @@
                 \path
                     ++(270:2.5) node {\textbf{B}}
                     ++(0:0.5) node (b) {}
-                    +(0:13.5) node (b-end) {}
+                    +(0:13) node (b-end) {}
                     +(0:1) node[point, label=below right:{$\{a\}$}] (b-initial) {}
                     +(0:3.5) node[point, label=below right:{$\{\}$}, label=above left:{$\trm{rmv}(a)$}] (b-removes) {}
                     +(0:8.5) node[point, label=above left:{$\trm{sync}$}] (b-start-sync) {}
@@ -85,8 +85,8 @@
 
     \begin{block}{Several semantics were proposed:}
         \begin{itemize}
-            \item \emph{Add-Wins}: \alert{$\trm{add}(a)$ has priority} over concurrent $\trm{rmv}(b) \implies \{a\}$
-            \item \emph{Remove-Wins}: \alert{$\trm{rmv}(a)$ has priority} over concurrent $\trm{add}(b) \implies \{\}$
+            \item \emph{Add-Wins}: \alert{$\trm{add}(a)$ has priority} over concurrent $\trm{rmv}(a) \implies \{a\}$
+            \item \emph{Remove-Wins}: \alert{$\trm{rmv}(a)$ has priority} over concurrent $\trm{add}(a) \implies \{\}$
             \item \emph{Causal-Length} \cite{2020-cl-set-weihai}: The \alert{last action of the longuest chain of sequential updates} determines the presence (or not) of the element $\implies \{a\}$ 
         \end{itemize}
     \end{block}
