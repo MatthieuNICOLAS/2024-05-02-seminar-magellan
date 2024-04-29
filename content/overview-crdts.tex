@@ -1,0 +1,42 @@
+\section{Conflict-free Replicated Data Types (CRDTs)}
+
+\begin{frame}{Conflict-free Replicated Data Types (CRDTs)  \cite{shapiro_2011_crdt}}
+    \begin{itemize}
+        \item New specifications of existing Data Types, \eg \emph{Set} or \emph{Sequence}
+        \item Embed natively conflict resolution mechanisms
+    \end{itemize}
+    \pause
+    \begin{block}{Properties of CRDTs}
+        \begin{itemize}
+            \item Enable modifications \alert{without coordination}
+            \item Ensure \alert{Strong Eventual Consistency}
+        \end{itemize}
+    \end{block}
+    \pause
+    \begin{block}{Strong Eventual Consistency}
+        Nodes that integrate the same set of updates reach equivalent states, \alert{without additional actions or messages}
+    \end{block}
+    \pause
+    \begin{itemize}
+        \item Rely on the lattice theory \dots
+        \item \dots More specifically, \alert{CRDTs are join-semilattice}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Design of CRDTs}
+    \begin{itemize}
+        \item \alert{Several CRDTs} may be designed \alert{for a given data type} \dots
+        \item \dots Each offering different trade-offs
+    \end{itemize}
+
+    \begin{block}{What impact the design of a given CRDT are its}
+        \begin{itemize}
+            \item Conflict Resolution Semantics
+            \item Synchronisation Model
+        \end{itemize}
+    \end{block}
+
+    \begin{itemize}
+        \item Impact their \alert{overhead in terms of computation, memory and bandwidth}
+    \end{itemize}
+\end{frame}

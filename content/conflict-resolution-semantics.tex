@@ -1,0 +1,93 @@
+\section{Conflict Resolution Semantics}
+
+\begin{frame}{Conflict Resolution Semantics}
+    \begin{itemize}
+        \item Distributed setting \alert{allows new scenarios}
+    \end{itemize}
+
+    \begin{figure}
+        \resizebox{\textwidth}{!}{
+            \centering
+            \begin{tikzpicture}
+                \path
+                    node {\textbf{A}}
+                    ++(0:0.5) node (a) {}
+                    +(0:13.5) node (a-end) {}
+                    +(0:1) node[point, label=above right:{$\{a\}$}] (a-initial) {}
+                    +(0:3.5) node[point, label=above right:{$\{\}$}, label=below left:{$\trm{rmv}(a)$}] (a-removes) {}
+                    +(0:6) node[point, label=above right:{$\{a\}$}, label=below left:{$\trm{add}(a)$}] (a-add) {}
+                    +(0:8.5) node[point, label=below left:{$\trm{sync}$}] (a-start-sync) {}
+                    +(0:11) node[point, label=above right:{$\{?\}$}] (a-end-sync) {};
+
+                \draw[dotted] (a) -- (a-initial) (a-end-sync) -- (a-end);
+                \draw[->, thick] (a-initial) --  (a-removes) -- (a-add) -- (a-start-sync) -- (a-end-sync);
+
+                \path
+                    ++(270:2.5) node {\textbf{B}}
+                    ++(0:0.5) node (b) {}
+                    +(0:13.5) node (b-end) {}
+                    +(0:1) node[point, label=below right:{$\{a\}$}] (b-initial) {}
+                    +(0:3.5) node[point, label=below right:{$\{\}$}, label=above left:{$\trm{rmv}(a)$}] (b-removes) {}
+                    +(0:8.5) node[point, label=above left:{$\trm{sync}$}] (b-start-sync) {}
+                    +(0:11) node[point, label=below right:{$\{?\}$}] (b-end-sync) {};
+
+                \draw[dotted] (b) -- (b-initial) (b-end-sync) -- (b-end);
+                \draw[->, thick] (b-initial) --  (b-removes) -- (b-start-sync) -- (b-end-sync);
+
+                \draw[->, dashed, shorten >= 1] (a-start-sync) edge (b-end-sync);
+                \draw[->, dashed, shorten >= 1] (b-start-sync) edge (a-end-sync);
+            \end{tikzpicture}
+        }
+    \end{figure}
+
+    \begin{itemize}
+        \item \alert{Results} of these executions \alert{are undefined}
+        \item Designing a CRDT consists in \alert{defining its behaviour} in such cases
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conflict Resolution Semantics - Case study of the Set}
+    \metroset{block=transparent}
+    \begin{figure}
+        \resizebox{\textwidth}{!}{
+            \centering
+            \begin{tikzpicture}
+                \path
+                    node {\textbf{A}}
+                    ++(0:0.5) node (a) {}
+                    +(0:13.5) node (a-end) {}
+                    +(0:1) node[point, label=above right:{$\{a\}$}] (a-initial) {}
+                    +(0:3.5) node[point, label=above right:{$\{\}$}, label=below left:{$\trm{rmv}(a)$}] (a-removes) {}
+                    +(0:6) node[point, label=above right:{$\{a\}$}, label=below left:{$\trm{add}(a)$}] (a-add) {}
+                    +(0:8.5) node[point, label=below left:{$\trm{sync}$}] (a-start-sync) {}
+                    +(0:11) node[point, label=above right:{$\{?\}$}] (a-end-sync) {};
+
+                \draw[dotted] (a) -- (a-initial) (a-end-sync) -- (a-end);
+                \draw[->, thick] (a-initial) --  (a-removes) -- (a-add) -- (a-start-sync) -- (a-end-sync);
+
+                \path
+                    ++(270:2.5) node {\textbf{B}}
+                    ++(0:0.5) node (b) {}
+                    +(0:13.5) node (b-end) {}
+                    +(0:1) node[point, label=below right:{$\{a\}$}] (b-initial) {}
+                    +(0:3.5) node[point, label=below right:{$\{\}$}, label=above left:{$\trm{rmv}(a)$}] (b-removes) {}
+                    +(0:8.5) node[point, label=above left:{$\trm{sync}$}] (b-start-sync) {}
+                    +(0:11) node[point, label=below right:{$\{?\}$}] (b-end-sync) {};
+
+                \draw[dotted] (b) -- (b-initial) (b-end-sync) -- (b-end);
+                \draw[->, thick] (b-initial) --  (b-removes) -- (b-start-sync) -- (b-end-sync);
+
+                \draw[->, dashed, shorten >= 1] (a-start-sync) edge (b-end-sync);
+                \draw[->, dashed, shorten >= 1] (b-start-sync) edge (a-end-sync);
+            \end{tikzpicture}
+        }
+    \end{figure}
+
+    \begin{block}{Several semantics were proposed:}
+        \begin{itemize}
+            \item \emph{Add-Wins}: \alert{$\trm{add}(a)$ has priority} over concurrent $\trm{rmv}(b) \implies \{a\}$
+            \item \emph{Remove-Wins}: \alert{$\trm{rmv}(a)$ has priority} over concurrent $\trm{add}(b) \implies \{\}$
+            \item \emph{Causal-Length} \cite{2020-cl-set-weihai}: The \alert{last action of the longuest chain of sequential updates} determines the presence (or not) of the element $\implies \{a\}$ 
+        \end{itemize}
+    \end{block}
+\end{frame}

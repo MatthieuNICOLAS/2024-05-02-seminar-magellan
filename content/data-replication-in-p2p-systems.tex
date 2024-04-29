@@ -123,23 +123,6 @@
     }
 \end{frame}
 
-\subsection{Conflict-free Replicated Data Types (CRDTs) pour le type Séquence}
-
-\begin{frame}{Conflict-free Replicated Data Types (CRDTs)  \cite{shapiro_2011_crdt}}
-    \begin{itemize}
-        \item Nouvelles spécifications des types de données, \eg \emph{Ensemble} ou \emph{Séquence}
-        \item Incorpore nativement mécanisme de résolution de conflits
-    \end{itemize}
-    \pause
-    \begin{block}{Propriétés des CRDTs}
-        \begin{itemize}
-            \item Permettent modifications \alert{sans coordination}
-            \item Garantissent la \alert{cohérence forte à terme}
-        \end{itemize}
-    \end{block}
-    \pause
-    \begin{block}{Cohérence forte à terme}
-        Ensemble des noeuds ayant intégrés le même ensemble de modifications obtient des états équivalents, \alert{sans nécessiter d'actions ou messages supplémentaires}
-    \end{block}
+\begin{frame}[standout]
+    Conflict-free Replicated Data Types (CRDTs) are a family of conflict resolution mechanisms
 \end{frame}
-
