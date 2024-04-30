@@ -259,6 +259,18 @@ isbn="978-3-319-26850-7"
   numpages = {6}
 }
 
+@article{2022-tree-crdt-kleppmann,
+  author={Kleppmann, Martin and Mulligan, Dominic P. and Gomes, Victor B. F. and Beresford, Alastair R.},
+  journal={IEEE Transactions on Parallel and Distributed Systems},
+  title={A Highly-Available Move Operation for Replicated Trees},
+  year={2022},
+  volume={33},
+  number={7},
+  pages={1711-1724},
+  keywords={Internet;Synchronization;Computer bugs;XML;Software;Drives;Data models;Conflict-free replicated data types (CRDTs);formal verification;distributed filesystems;distributed collaboration},
+  doi={10.1109/TPDS.2021.3118603}}
+
+
 % Fixed size sequence CRDTs
 % --------
 
@@ -798,6 +810,13 @@ eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/cpe.4108},
   author = {redis Labs},
   url = {https://www.redislabs.com/redis-enterprise/technology/active-active-geo-distribution/},
   note = {Last Accessed: 2022-10-07}
+}
+
+@misc{AzureCosmosDB,
+  title = {{Azure Cosmos DB: Pushing the frontier of globally distributed databases}},
+  author = {Azure Cosmos DB},
+  url = {https://azure.microsoft.com/en-us/blog/azure-cosmos-db-pushing-the-frontier-of-globally-distributed-databases/},
+  note = {Last Accessed: 2024-04-30}
 }
 
 % Local-First Software
@@ -2239,4 +2258,52 @@ year = {2012}
   journal={Proceedings of the ACM on Human-Computer Interaction (PACMHCI)},
   month={nov},
   articleno={531},
+}
+
+% Invariant
+@inproceedings{2015-numeric-invariants-crdts-balegas,
+  author={Balegas, Valter and Serra, Diogo and Duarte, Sérgio and Ferreira, Carla and Shapiro, Marc and Rodrigues, Rodrigo and Preguiça, Nuno},
+  booktitle={2015 IEEE 34th Symposium on Reliable Distributed Systems (SRDS)},
+  title={Extending Eventually Consistent Cloud Databases for Enforcing Numeric Invariants},
+  year={2015},
+  volume={},
+  number={},
+  pages={31-36},
+  keywords={Radiation detectors;Middleware;Distributed databases;Fault tolerance;Fault tolerant systems;Prototypes;Distributed Systems;Geo-Replication;Key-Value Databases;Eventual Consistency},
+  doi={10.1109/SRDS.2015.32}
+}
+
+@techreport{2023-synql-elvinger,
+  TITLE = {{Synql: Replicated Relations and Integrity Maintenance}},
+  AUTHOR = {Elvinger, Victorien and Ignat, Claudia-Lavinia},
+  URL = {https://inria.hal.science/hal-03999168},
+  INSTITUTION = {{Inria}},
+  YEAR = {2023},
+  MONTH = Feb,
+  KEYWORDS = {CRDT ; optimistic replication ; relational database},
+  PDF = {https://inria.hal.science/hal-03999168/file/main.pdf},
+  HAL_ID = {hal-03999168},
+  HAL_VERSION = {v1},
+}
+
+@misc{electrisql,
+  title = {{ElectricSQL - Sync for modern apps}},
+  author = {Electric DB Limited},
+  url = {https://electric-sql.com/},
+  note = {Last Accessed: 2024-04-30}
+}
+
+% Access Control
+@inproceedings{2023-access-control-crdts-rault,
+  TITLE = {{Access control based on CRDTs for Collaborative Distributed Applications}},
+  AUTHOR = {Rault, Pierre-Antoine and Ignat, Claudia-Lavinia and Perrin, Olivier},
+  URL = {https://inria.hal.science/hal-04224855},
+  BOOKTITLE = {{The International Symposium on Intelligent and Trustworthy Computing, Communications, and Networking (ITCCN-2023), in conjunction with the 22nd IEEE International Conference on Trust, Security and Privacy in Computing and Communications (TrustCom-2023)}},
+  ADDRESS = {Exeter, United Kingdom},
+  YEAR = {2023},
+  MONTH = Nov,
+  KEYWORDS = {distributed algorithms ; access control ; CRDT (Conflict-free Replicated Data Type) ; eventual consistency ; real-time collaborative editing},
+  PDF = {https://inria.hal.science/hal-04224855/file/paper%20%281%29.pdf},
+  HAL_ID = {hal-04224855},
+  HAL_VERSION = {v1},
 }
