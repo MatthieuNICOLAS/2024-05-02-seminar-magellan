@@ -8,19 +8,19 @@
             \item \dots And integrate those of others
         \end{itemize}
     \end{block}
-
+    \pause
     \begin{block}{Several approaches proposed \cite{shapiro_2011_crdt}}
         \begin{itemize}
             \item State-based synchronisation
             \item Operation-based synchronisation
-            \item<2->
-                \only<2> {Delta-based synchronisation \cite{Almeida_2018}}
-                \only<3> {\color{gray} Delta-based synchronisation \cite{Almeida_2018}}
-            \only<2-3>{
+            \item<3->
+                \only<3> {Delta-based synchronisation \cite{Almeida_2018}}
+                \only<4> {\color{gray} Delta-based synchronisation \cite{Almeida_2018}}
+            \only<3-4>{
                 \begin{itemize}
                     \item
-                        \only<2>{"Best of the two worlds" approach}
-                        \only<3>{\color{gray} "Best of the two worlds" approach}
+                        \only<3>{"Best of the two worlds" approach}
+                        \only<4>{\color{gray} "Best of the two worlds" approach}
                 \end{itemize}
             }
         \end{itemize}
@@ -32,13 +32,20 @@
     \metroset{block=transparent}
 
     \begin{block}{Properties of join-semilattices}
+        \pause
         \begin{itemize}
-            \item States of the join-semilattices are partially ordered according to relation $\leq$
+            \item States of the join-semilattice are partially ordered according to relation $\leq$
+            \pause
             \item Updates produce new states by inflation, i.e. greater to previous ones according to $\leq$
+            \pause
             \item Exists a function $\trm{join}$ that, given any pair of states, generates the minimal state greater or equal to both given states according to $\leq$
+            \pause
             \item Exists a set of minimal states of the join-semilattice, the \emph{irreducible elements}
         \end{itemize}
     \end{block}
+    \pause
+    \center
+    \alert{Synchronisation models rely on these properties}
 \end{frame}
 
 \subsection{State-based CRDTs}
@@ -87,7 +94,7 @@
     \end{figure}
 
     \begin{itemize}
-        \item Upon reception, \alert{computes new state by merging received state with current one} using \texttt{merge} function
+        \item Upon reception, \alert{computes new state by merging received state with current one} using \texttt{merge} function  ($\trm{join}$ in lattice theory)
         \item With \texttt{merge}, a \alert{commutative, associative and idempotent function}
     \end{itemize}
 \end{frame}
@@ -101,14 +108,16 @@
             \item i.e. messages may be lost, re-ordered or duplicated w/o impact
         \end{itemize}
     \end{block}
+    \pause
     \begin{block}{Limits}
         \begin{itemize}
             \item States difficult to design
             \begin{itemize}
                 \item e.g. how to represent efficiently deletion of elements?
             \end{itemize}
-            \item States expensive to broadcast
-            \item \texttt{merge} expensive
+            \pause
+            \item Depending on data type, states expensive to broadcast\dots
+            \item \dots And \texttt{merge} expensive to execute
         \end{itemize}
     \end{block}
 \end{frame}
@@ -118,7 +127,7 @@
 \begin{frame}{Operation-based synchronisation}
     \begin{itemize}
         \item \alert{Encode updates as arbitrary messages}, called \emph{operations}
-        \item An operation \alert{correponds to one or several irreducible elements}
+        \item An operation \alert{correponds to one or several \emph{irreducible elements}}
     \end{itemize}
 
     \begin{figure}[!ht]
@@ -166,7 +175,9 @@
             \draw[->, dashed, shorten >= 1] (a-add-b) -- (network-error);
           \end{tikzpicture}
         }
-      \end{figure}
+    \end{figure}
+
+    \pause
 
     \begin{itemize}
         \item Upon reception, \alert{apply operations on current state}
@@ -183,6 +194,9 @@
             \item Operations usually cheap to broadcast and apply
         \end{itemize}
     \end{block}
+
+    \pause
+
     \begin{block}{Limits}
         \begin{itemize}
             \item Hides/delegates complexity to delivery of operations
@@ -190,7 +204,10 @@
                 \item i.e. requires specific delivery order of operations
                 \item e.g. insertion of an element before its deletion
             \end{itemize}
-            \item Have to pair Op-based CRDTs with a delivery service to handle network failures
+            \pause
+            \item Weak to network failures
+            \pause
+            \item Have to pair Op-based CRDTs to a message delivery service
             \begin{itemize}
                 \item To re-order and/or de-duplicate operations
                 \item To retrieve lost operations using anti-entropy mechanisms

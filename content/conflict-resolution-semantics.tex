@@ -39,7 +39,7 @@
             \end{tikzpicture}
         }
     \end{figure}
-
+    \pause
     \begin{itemize}
         \item \alert{Results} of these executions \alert{are undefined}
         \item Designing a CRDT consists in \alert{defining its behaviour} in such cases
@@ -83,11 +83,14 @@
         }
     \end{figure}
 
-    \begin{block}{Several semantics were proposed:}
+    \begin{block}{Several semantics proposed:}
+        \pause
         \begin{itemize}
             \item \emph{Add-Wins}: \alert{$\trm{add}(a)$ has priority} over concurrent $\trm{rmv}(a) \implies \{a\}$
+            \pause
             \item \emph{Remove-Wins}: \alert{$\trm{rmv}(a)$ has priority} over concurrent $\trm{add}(a) \implies \{\}$
-            \item \emph{Causal-Length} \cite{2020-cl-set-weihai}: The \alert{last action of the longuest chain of sequential updates} determines the presence (or not) of the element $\implies \{a\}$ 
+            \pause
+            \item \emph{Causal-Length} \cite{2020-cl-set-weihai}: The \alert{last action of the longuest chain of updates} determines the presence (or not) of the element $\implies \{a\}$
         \end{itemize}
     \end{block}
 \end{frame}
