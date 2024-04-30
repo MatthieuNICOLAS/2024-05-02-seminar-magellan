@@ -1,6 +1,6 @@
 \section{Data replication in peer-to-peer systems}
 
-\begin{frame}{MUTE}
+\begin{frame}{MUTE \cite{MUTE2017}}
     \vspace{-0.5cm}
     \begin{figure}
         \resizebox{\textwidth}{!}{
@@ -9,10 +9,9 @@
     \end{figure}
     \vspace{-0.5cm}
     \begin{itemize}
-        \item Peer-to-Peer (P2P) application
+        \item Peer-to-Peer (P2P) application \cite{localfirstsoftware2019}
         \item Allow to edit collaboratively text documents
         \item Ensure ownership and privacy of data
-        \item Part of the Local-First Software \cite{localfirstsoftware2019} trend
     \end{itemize}
 \end{frame}
 
@@ -105,7 +104,7 @@
         \begin{column}{0.6\textwidth}
             \begin{itemize}
                 \item<2-> Nodes may be disconnected
-                \item<3-> Have to be able to \alert{work without prior synchronous coordination} (i.e. consensus)
+                \item<3-> Allow nodes to \alert{work without prior or current synchronous coordination} (i.e. consensus)
             \end{itemize}
         \end{column}
         \begin{column}{0.6\textwidth}
@@ -124,5 +123,5 @@
 \end{frame}
 
 \begin{frame}[standout]
-    Conflict-free Replicated Data Types (CRDTs) are a family of conflict resolution mechanisms
+    Conflict-free Replicated Data Types (CRDTs) are a \alert{family of conflict resolution mechanisms}
 \end{frame}

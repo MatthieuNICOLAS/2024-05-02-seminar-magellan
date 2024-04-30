@@ -1,0 +1,23 @@
+\section{Synchronisation Models}
+
+\subsection{Delta-based synchronisation}
+
+\subsection{Recap}
+
+\begin{frame}{Synchronisation Models - Recap}
+    \begin{table}[!ht]
+        \centering
+        \resizebox{\columnwidth}{!}{
+          \begin{tabular}{lccc}
+            \toprule
+                                                      & State-based & Op-based    & Delta-based \\
+            \midrule
+            Integrate updates by merging states         & \checkmark  & \ballotx    & \checkmark  \\
+            Integrate updates by irreducible elts      & \ballotx    & \checkmark  & \checkmark  \\
+            Handle natively network failures          & \checkmark  & \ballotx    & \checkmark  \\
+            Suited for real-time systems              & \ballotx    & \checkmark  & \checkmark  \\
+            \bottomrule
+          \end{tabular}
+        }
+    \end{table}
+\end{frame}

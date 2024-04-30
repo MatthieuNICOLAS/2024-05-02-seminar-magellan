@@ -9,10 +9,20 @@
         \end{itemize}
     \end{block}
 
-    \begin{block}{Several approaches proposed}
+    \begin{block}{Several approaches proposed \cite{shapiro_2011_crdt}}
         \begin{itemize}
             \item State-based synchronisation
             \item Operation-based synchronisation
+            \item<2->
+                \only<2> {Delta-based synchronisation \cite{Almeida_2018}}
+                \only<3> {\color{gray} Delta-based synchronisation \cite{Almeida_2018}}
+            \only<2-3>{
+                \begin{itemize}
+                    \item
+                        \only<2>{"Best of the two worlds" approach}
+                        \only<3>{\color{gray} "Best of the two worlds" approach}
+                \end{itemize}
+            }
         \end{itemize}
     \end{block}
 \end{frame}
@@ -23,9 +33,10 @@
 
     \begin{block}{Properties of join-semilattices}
         \begin{itemize}
-            \item States of the join-semilattices are ordered according to relation $\leq$
+            \item States of the join-semilattices are partially ordered according to relation $\leq$
             \item Updates produce new states by inflation, i.e. greater to previous ones according to $\leq$
             \item Exists a function $\trm{join}$ that, given any pair of states, generates the minimal state greater or equal to both given states according to $\leq$
+            \item Exists a set of minimal states of the join-semilattice, the \emph{irreducible elements}
         \end{itemize}
     \end{block}
 \end{frame}
@@ -92,8 +103,12 @@
     \end{block}
     \begin{block}{Limits}
         \begin{itemize}
-            \item Sending states may be expensive
-            \item \texttt{merge} may be expensive and difficult to design
+            \item States difficult to design
+            \begin{itemize}
+                \item e.g. how to represent efficiently deletion of elements?
+            \end{itemize}
+            \item States expensive to broadcast
+            \item \texttt{merge} expensive
         \end{itemize}
     \end{block}
 \end{frame}
@@ -103,6 +118,7 @@
 \begin{frame}{Operation-based synchronisation}
     \begin{itemize}
         \item \alert{Encode updates as arbitrary messages}, called \emph{operations}
+        \item An operation \alert{correponds to one or several irreducible elements}
     \end{itemize}
 
     \begin{figure}[!ht]
@@ -153,7 +169,7 @@
       \end{figure}
 
     \begin{itemize}
-        \item Upon reception, apply operations on current state
+        \item Upon reception, \alert{apply operations on current state}
         \item \alert{Concurrent operations} must be \alert{commutative}
     \end{itemize}
 \end{frame}
@@ -163,14 +179,15 @@
 
     \begin{block}{Strengths}
         \begin{itemize}
+            \item Designing operations is straightforward
             \item Operations usually cheap to broadcast and apply
         \end{itemize}
     \end{block}
     \begin{block}{Limits}
         \begin{itemize}
-            \item Hide/delegate complexity to delivery order of operations
+            \item Hides/delegates complexity to delivery of operations
             \begin{itemize}
-                \item i.e. require specific delivery order of operations
+                \item i.e. requires specific delivery order of operations
                 \item e.g. insertion of an element before its deletion
             \end{itemize}
             \item Have to pair Op-based CRDTs with a delivery service to handle network failures
@@ -180,26 +197,4 @@
             \end{itemize}
         \end{itemize}
     \end{block}
-\end{frame}
-
-\subsection{Delta-based synchronisation}
-
-\subsection{Recap}
-
-\begin{frame}{Synchronisation Models - Recap}
-    \begin{table}[!ht]
-        \centering
-        \resizebox{\columnwidth}{!}{
-          \begin{tabular}{lccc}
-            \toprule
-                                                      & State-based & Op-based    & Delta-based \\
-            \midrule
-            Integrate updates by merging states         & \checkmark  & \ballotx    & \checkmark  \\
-            Integrate updates by single element       & \ballotx    & \checkmark  & \checkmark  \\
-            Handle natively network failures          & \checkmark  & \ballotx    & \checkmark  \\
-            Suited for real-time systems              & \ballotx    & \checkmark  & \checkmark  \\
-            \bottomrule
-          \end{tabular}
-        }
-    \end{table}
 \end{frame}
