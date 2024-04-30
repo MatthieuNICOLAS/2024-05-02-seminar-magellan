@@ -1,0 +1,53 @@
+\section{Conclusion}
+
+\begin{frame}{To recap}
+    \begin{itemize}
+        \item CRDTs are new specifications of data types
+        \item Enable nodes to collaboratively edit data w/o coordination
+        \item Ensure Strong Eventual Consistency
+        \item Several CRDTs designed per data types
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{State of art}
+    \begin{itemize}
+        \item CRDTs for many data types
+        \begin{itemize}
+            \item \emph{Register}, \emph{Set} \cite{2018-crdts-overview-preguica}, \emph{Sequence} \cite{ROH2011354,2009-logoot-weiss}, \emph{JSON} \cite{jsoncrdt2017}, \emph{Tree} \cite{2022-tree-crdt-kleppmann} \dots
+        \end{itemize}
+        \item Libraries providing CRDTs to build new applications
+        \begin{itemize}
+            \item Yjs \cite{yjsimplem}, Automerge \cite{automerge}\dots
+        \end{itemize}
+        \pause
+        \item Used in collaborative applications
+        \begin{itemize}
+            \item Teletype, Apple Notes\dots
+        \end{itemize}
+        \item Used in multi-master replication for distributed databases
+        \begin{itemize}
+            \item Redis \cite{RedisEnterpriseActiveActiveGeoDistribution}, Microsoft Azure CosmoDB \cite{AzureCosmosDB}\dots
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Ongoing researchs}
+    \begin{itemize}
+        \item Designing CRDTs for new use cases
+        \begin{itemize}
+            \item Rich Text \cite{2022-peritext-litt}, Access Control \cite{2023-access-control-crdts-rault}
+        \end{itemize}
+        \pause
+        \item Reducing CRDTs' overhead
+        \begin{itemize}
+            \item Topic of my PhD, in the context of Sequence CRDTs \cite{2022-rls-tpds-nicolas}
+        \end{itemize}
+        \pause
+        \item Designing CRDTs ensuring global invariants
+        \begin{itemize}
+            \item Integrity constraints in relational databases \cite{2023-synql-elvinger,electrisql}
+        \end{itemize}
+        \pause
+        \item Designing CRDTs for systems with malicious nodes
+    \end{itemize}
+\end{frame}
