@@ -99,7 +99,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{State-based synchronisation - ???}
+\begin{frame}{State-based synchronisation - Review}
     \metroset{block=transparent}
 
     \begin{block}{Strengths}
@@ -138,41 +138,30 @@
             \path
                 node {\textbf{A}}
                 ++(0:0.5) node (a) {}
-                +(0:17) node (a-end) {}
+                +(0:13.5) node (a-end) {}
                 +(0:1) node[point, label=above right:{$\set{a,e}$}] (a-initial) {}
                 +(0:3.5) node[point, label=above right:{$\set{a,b,e}$}, label=-170:{$\trm{add}(b)$}] (a-add-b) {}
-                +(0:6) node[point, label=above right:{$\set{a,b,c,e}$}, label=-170:{$\trm{add}(c)$}] (a-add-c) {}
-                +(0:8.5) node[point, label=above right:{$\set{a,b,c,d,e}$}] (a-receives-add-d) {}
-                +(0:13.5) node[point, label={[xshift=8pt]-10:{$\trm{add(b)}$}}] (a-receives-query-sync) {}
-                +(0:16) node (a-final) {};
+                +(0:7) node[point, label=above right:{$\set{a,b,c,e}$}, label=-170:{$\trm{add}(c)$}] (a-add-c) {}
+                +(0:12.5) node[point, label=above right:{$\set{a,b,c,d,e}$}] (a-receives-add-d) {};
 
-            \draw[dotted] (a) -- (a-initial) (a-final) -- (a-end);
-            \draw[->, thick] (a-initial) --  (a-add-b) -- (a-add-c) -- (a-receives-add-d) -- (a-receives-query-sync) -- (a-final);
+            \draw[dotted] (a) -- (a-initial) (a-receives-add-d) -- (a-end);
+            \draw[->, thick] (a-initial) --  (a-add-b) -- (a-add-c) -- (a-receives-add-d);
 
             \path
                 ++(270:3) node {\textbf{B}}
                 ++(0:0.5) node (b) {}
-                +(0:17) node (b-end) {}
+                +(0:13.5) node (b-end) {}
                 +(0:1) node[point, label=below right:{$\set{a,e}$}] (b-initial) {}
                 +(0:6) node[point, label=below right:{$\set{a,d,e}$}, label=170:{$\trm{add}(d)$}] (b-add-d) {}
-                +(0:8.5) node[point, label=below right:{$\set{a,c,d,e}$}] (b-receives-add-c) {}
-                +(0:11) node[point, label=170:{$\trm{query\ sync}$}] (b-sends-query-sync) {}
-                +(0:16) node[point, label=below right:{$\set{a,b,c,d,e}$}] (b-final) {};
+                +(0:9) node[point, label=below right:{$\set{a,b,d,e}$}] (b-receives-add-b) {}
+                +(0:12.5) node[point, label=below right:{$\set{a,b,c,d,e}$}] (b-receives-add-c) {};
 
-            \draw[dotted] (b) -- (b-initial) (b-final) -- (b-end);
-            \draw[->, thick] (b-initial) --  (b-add-d) -- (b-receives-add-c) -- (b-sends-query-sync) -- (b-final);
+            \draw[dotted] (b) -- (b-initial) (b-receives-add-c) -- (b-end);
+            \draw[->, thick] (b-initial) --  (b-add-d) -- (b-receives-add-c);
 
+            \draw[->, dashed, shorten >= 1] (a-add-b) -- (b-receives-add-b);
             \draw[->, dashed, shorten >= 1] (a-add-c) -- (b-receives-add-c);
             \draw[->, dashed, shorten >= 1] (b-add-d) -- (a-receives-add-d);
-            \draw[->, dashed, shorten >= 1] (b-sends-query-sync) -- (a-receives-query-sync);
-            \draw[->, dashed, shorten >= 1] (a-receives-query-sync) -- (b-final);
-
-            \path
-              ++(270:1.5)
-              ++(0:0.5)
-              +(0:4.75) node[cross] (network-error) {};
-
-            \draw[->, dashed, shorten >= 1] (a-add-b) -- (network-error);
           \end{tikzpicture}
         }
     \end{figure}
@@ -185,7 +174,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}{Operation-based synchronisation - ???}
+\begin{frame}{Operation-based synchronisation - Review}
     \metroset{block=transparent}
 
     \begin{block}{Strengths}

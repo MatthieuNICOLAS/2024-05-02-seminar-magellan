@@ -1,12 +1,20 @@
 \section{Conclusion}
 
 \begin{frame}{To recap}
-    \begin{itemize}
-        \item CRDTs are new specifications of data types
-        \item Enable nodes to collaboratively edit data w/o coordination
-        \item Ensure Strong Eventual Consistency
-        \item Several CRDTs designed per data types
-    \end{itemize}
+    \metroset{block=transparent}
+    \begin{block}{CRDTs are new specifications of Data Types}
+        \begin{itemize}
+            \item Enable nodes to collaboratively edit data w/o coordination
+            \item Ensure Strong Eventual Consistency
+        \end{itemize}
+    \end{block}
+    \begin{block}{Several CRDTs designed per data types}
+        \begin{itemize}
+            \item With different behaviours in case of conflict\dots
+            \item \dots and different techniques to broadcast updates
+            \item E.g. 10+ CRDTs for \emph{Sequence}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \begin{frame}{State of art}
