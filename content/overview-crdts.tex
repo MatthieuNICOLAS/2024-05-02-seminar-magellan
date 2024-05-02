@@ -23,6 +23,23 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}{Lattice theory for CRDTs}
+    \metroset{block=transparent}
+
+    \begin{block}{Properties of join-semilattices}
+        \pause
+        \begin{itemize}
+            \item States of the join-semilattice are partially ordered according to relation $\leq$
+            \pause
+            \item Updates produce new states by inflation, i.e. greater to previous ones according to $\leq$
+            \pause
+            \item Exists a function $\trm{join}$ that, given any pair of states, generates the minimal state greater or equal to both given states according to $\leq$
+            \pause
+            \item Exists a set of minimal states of the join-semilattice, the \emph{irreducible elements}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
 \begin{frame}{Design of CRDTs}
     \begin{itemize}
         \item \alert{Several CRDTs} may be designed \alert{for a given data type} \dots

@@ -27,27 +27,6 @@
     \end{block}
 \end{frame}
 
-
-\begin{frame}{An aparté about lattice theory}
-    \metroset{block=transparent}
-
-    \begin{block}{Properties of join-semilattices}
-        \pause
-        \begin{itemize}
-            \item States of the join-semilattice are partially ordered according to relation $\leq$
-            \pause
-            \item Updates produce new states by inflation, i.e. greater to previous ones according to $\leq$
-            \pause
-            \item Exists a function $\trm{join}$ that, given any pair of states, generates the minimal state greater or equal to both given states according to $\leq$
-            \pause
-            \item Exists a set of minimal states of the join-semilattice, the \emph{irreducible elements}
-        \end{itemize}
-    \end{block}
-    \pause
-    \center
-    \alert{Synchronisation models rely on these properties}
-\end{frame}
-
 \subsection{State-based CRDTs}
 
 \begin{frame}{State-based synchronisation}
@@ -65,37 +44,48 @@
             \path
                 node {\textbf{A}}
                 ++(0:0.5) node (a) {}
-                +(0:13) node (a-end) {}
-                +(0:1) node[point, label=above right:{$\set{a,e}$}] (a-initial) {}
-                +(0:3.5) node[point, label=above right:{$\set{a,b,e}$}, label=-170:{$\trm{add}(b)$}] (a-add-b) {}
-                +(0:6) node[point, label=above right:{$\set{a,b,c,e}$}, label=-170:{$\trm{add}(c)$}] (a-add-c) {}
-                +(0:8.5) node[point, label=below left:{$\trm{sync}$}, label={[xshift=10pt]-10:{$\set{a,b,c,e}$}}] (a-sends-state) {}
-                +(0:11.5) node[point, label=above right:{$\set{a,b,c,d,e}$}] (a-final) {};
+                +(0:13.5) node (a-end) {}
+                +(0:1) node[point, label=above right:{$\set{a,d}$}] (a-initial) {}
+                +(0:3.5) node[point, label=above right:{$\set{a,b,d}$}, label=-170:{$\trm{add}(b)$}] (a-add-b) {}
+                +(0:6) node[point, label=above right:{$\set{a,b,c,d}$}, label=-170:{$\trm{add}(c)$}] (a-add-c) {}
+                +(0:8.5) node (a-sends-state) {}
+                +(0:11.5) node (a-final) {};
 
             \draw[dotted] (a) -- (a-initial) (a-final) -- (a-end);
-            \draw[->, thick] (a-initial) --  (a-add-b) -- (a-add-c) -- (a-sends-state) -- (a-final);
+            \draw[->, thick] (a-initial) -- (a-final);
 
             \path
                 ++(270:2) node {\textbf{B}}
                 ++(0:0.5) node (b) {}
-                +(0:13) node (b-end) {}
-                +(0:1) node[point, label=below right:{$\set{a,e}$}] (b-initial) {}
-                +(0:3.5) node[point, label=below right:{$\set{a,d,e}$}, label=170:{$\trm{add}(d)$}] (b-add-d) {}
-                +(0:8.5) node[point, label=170:{$\trm{sync}$}, label={[xshift=15pt]10:{$\set{a,d,e}$}}] (b-sends-state) {}
-                +(0:11.5) node[point, label=below right:{$\set{a,b,c,d,e}$}] (b-final) {};
+                +(0:13.5) node (b-end) {}
+                +(0:1) node[point, label=below right:{$\set{a,d}$}] (b-initial) {}
+                +(0:3.5) node[point, label=below right:{$\set{\cancel{a},d}$}, label=170:{$\trm{rmv}(a)$}] (b-rmv-a) {}
+                +(0:8.5) node (b-sends-state) {}
+                +(0:11.5) node (b-final) {};
 
             \draw[dotted] (b) -- (b-initial) (b-final) -- (b-end);
-            \draw[->, thick] (b-initial) --  (b-add-d) -- (b-sends-state) -- (b-final);
+            \draw[->, thick] (b-initial) -- (b-final);
 
-            \draw[->, dashed, shorten >= 1] (a-sends-state) -- (b-final);
-            \draw[->, dashed, shorten >= 1] (b-sends-state) -- (a-final);
+            \path<2->
+                (a-sends-state) node[point, label=below left:{$\trm{sync}$}, label={[xshift=10pt]-10:{$\set{a,b,c,d}$}}] {}
+                (b-final) node[point] {};
+            \draw<2->[->, dashed, shorten >= 1] (a-sends-state) -- (b-final);
+
+            \path<3->
+                (b-final) node[label=below right:{$\set{\cancel{a},b,c,d}$}] {};
+
+            \path<4->
+                (b-sends-state) node[point, label=170:{$\trm{sync}$}, label={[xshift=15pt]10:{$\set{\cancel{a},d}$}}] {}
+                (a-final) node[point, label=above right:{$\set{\cancel{a},b,c,d}$}] {};
+
+            \draw<4->[->, dashed, shorten >= 1] (b-sends-state) -- (a-final);
           \end{tikzpicture}
         }
     \end{figure}
 
     \begin{itemize}
-        \item Upon reception, \alert{computes new state by merging received state with current one} using \texttt{merge} function  ($\trm{join}$ in lattice theory)
-        \item With \texttt{merge}, a \alert{commutative, associative and idempotent function}
+        \item<3-> Upon reception, \alert{computes new state by merging received state with current one} using \texttt{merge} function  ($\trm{join}$ in lattice theory)
+        \item<5-> With \texttt{merge}, a \alert{commutative, associative and idempotent function}
     \end{itemize}
 \end{frame}
 
@@ -138,30 +128,38 @@
             \path
                 node {\textbf{A}}
                 ++(0:0.5) node (a) {}
-                +(0:13.5) node (a-end) {}
-                +(0:1) node[point, label=above right:{$\set{a,e}$}] (a-initial) {}
-                +(0:3.5) node[point, label=above right:{$\set{a,b,e}$}, label=-170:{$\trm{add}(b)$}] (a-add-b) {}
-                +(0:7) node[point, label=above right:{$\set{a,b,c,e}$}, label=-170:{$\trm{add}(c)$}] (a-add-c) {}
-                +(0:12.5) node[point, label=above right:{$\set{a,b,c,d,e}$}] (a-receives-add-d) {};
+                +(0:14.5) node (a-end) {}
+                +(0:1) node[point, label=above right:{$\set{a,d}$}] (a-initial) {}
+                +(0:3.5) node[point, label=above right:{$\set{a,b,d}$}, label=-170:{$\trm{add}(b)$}] (a-add-b) {}
+                +(0:7) node[point, label=above right:{$\set{a,b,c,d}$}, label=-170:{$\trm{add}(c)$}] (a-add-c) {}
+                +(0:12.5) node (a-receives-rmv-a) {};
 
-            \draw[dotted] (a) -- (a-initial) (a-receives-add-d) -- (a-end);
-            \draw[->, thick] (a-initial) --  (a-add-b) -- (a-add-c) -- (a-receives-add-d);
+            \draw[dotted] (a) -- (a-initial) (a-receives-rmv-a) -- (a-end);
+            \draw[->, thick] (a-initial) -- (a-receives-rmv-a);
 
             \path
                 ++(270:3) node {\textbf{B}}
                 ++(0:0.5) node (b) {}
-                +(0:13.5) node (b-end) {}
-                +(0:1) node[point, label=below right:{$\set{a,e}$}] (b-initial) {}
-                +(0:6) node[point, label=below right:{$\set{a,d,e}$}, label=170:{$\trm{add}(d)$}] (b-add-d) {}
-                +(0:9) node[point, label=below right:{$\set{a,b,d,e}$}] (b-receives-add-b) {}
-                +(0:12.5) node[point, label=below right:{$\set{a,b,c,d,e}$}] (b-receives-add-c) {};
+                +(0:14.5) node (b-end) {}
+                +(0:1) node[point, label=below right:{$\set{a,d}$}] (b-initial) {}
+                +(0:6) node[point, label=below right:{$\set{\cancel{a},d}$}, label=170:{$\trm{rmv}(a)$}] (b-rmv-a) {}
+                +(0:9) node (b-receives-add-b) {}
+                +(0:12.5) node (b-receives-add-c) {};
 
             \draw[dotted] (b) -- (b-initial) (b-receives-add-c) -- (b-end);
-            \draw[->, thick] (b-initial) --  (b-add-d) -- (b-receives-add-c);
+            \draw[->, thick] (b-initial) -- (b-receives-add-c);
 
-            \draw[->, dashed, shorten >= 1] (a-add-b) -- (b-receives-add-b);
-            \draw[->, dashed, shorten >= 1] (a-add-c) -- (b-receives-add-c);
-            \draw[->, dashed, shorten >= 1] (b-add-d) -- (a-receives-add-d);
+            \path<2->
+                (b-receives-add-b) node[point, label=below right:{$\set{\cancel{a},b,d}$}]  {}
+                (b-receives-add-c) node[point, label=below right:{$\set{\cancel{a},b,c,d}$}] {};
+
+            \draw<2->[->, dashed, shorten >= 1] (a-add-b) -- (b-receives-add-b);
+            \draw<2->[->, dashed, shorten >= 1] (a-add-c) -- (b-receives-add-c);
+
+            \path<3->
+                (a-receives-rmv-a) node[point, label=above right:{$\set{\cancel{a},b,c,d}$}] {};
+
+            \draw<3->[->, dashed, shorten >= 1] (b-rmv-a) -- (a-receives-rmv-a);
           \end{tikzpicture}
         }
     \end{figure}
@@ -169,8 +167,8 @@
     \pause
 
     \begin{itemize}
-        \item Upon reception, \alert{apply operations on current state}
-        \item \alert{Concurrent operations} must be \alert{commutative}
+        \item<2-> Upon reception, \alert{apply operations on current state}
+        \item<4-> \alert{Concurrent operations} must be \alert{commutative}
     \end{itemize}
 \end{frame}
 
